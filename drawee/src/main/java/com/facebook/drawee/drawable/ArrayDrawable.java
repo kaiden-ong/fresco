@@ -7,7 +7,6 @@
 
 package com.facebook.drawee.drawable;
 
-import android.annotation.TargetApi;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Matrix;
@@ -15,7 +14,6 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import com.facebook.common.internal.Preconditions;
 import javax.annotation.Nullable;
 
@@ -54,8 +52,8 @@ public class ArrayDrawable extends Drawable
   public ArrayDrawable(Drawable[] layers) {
     Preconditions.checkNotNull(layers);
     mLayers = layers;
-    for (int i = 0; i < mLayers.length; i++) {
-      DrawableUtils.setCallbacks(mLayers[i], this, this);
+    for (Drawable mLayer : mLayers) {
+      DrawableUtils.setCallbacks(mLayer, this, this);
     }
     mDrawableParents = new DrawableParent[mLayers.length];
   }
@@ -108,8 +106,7 @@ public class ArrayDrawable extends Drawable
   @Override
   public int getIntrinsicWidth() {
     int width = -1;
-    for (int i = 0; i < mLayers.length; i++) {
-      Drawable drawable = mLayers[i];
+    for (Drawable drawable : mLayers) {
       if (drawable != null) {
         width = Math.max(width, drawable.getIntrinsicWidth());
       }
@@ -120,8 +117,7 @@ public class ArrayDrawable extends Drawable
   @Override
   public int getIntrinsicHeight() {
     int height = -1;
-    for (int i = 0; i < mLayers.length; i++) {
-      Drawable drawable = mLayers[i];
+    for (Drawable drawable : mLayers) {
       if (drawable != null) {
         height = Math.max(height, drawable.getIntrinsicHeight());
       }
@@ -131,8 +127,7 @@ public class ArrayDrawable extends Drawable
 
   @Override
   protected void onBoundsChange(Rect bounds) {
-    for (int i = 0; i < mLayers.length; i++) {
-      Drawable drawable = mLayers[i];
+    for (Drawable drawable : mLayers) {
       if (drawable != null) {
         drawable.setBounds(bounds);
       }
@@ -143,8 +138,7 @@ public class ArrayDrawable extends Drawable
   public boolean isStateful() {
     if (!mIsStatefulCalculated) {
       mIsStateful = false;
-      for (int i = 0; i < mLayers.length; i++) {
-        Drawable drawable = mLayers[i];
+      for (Drawable drawable : mLayers) {
         mIsStateful |= drawable != null && drawable.isStateful();
       }
       mIsStatefulCalculated = true;
@@ -155,8 +149,7 @@ public class ArrayDrawable extends Drawable
   @Override
   protected boolean onStateChange(int[] state) {
     boolean stateChanged = false;
-    for (int i = 0; i < mLayers.length; i++) {
-      Drawable drawable = mLayers[i];
+    for (Drawable drawable : mLayers) {
       if (drawable != null && drawable.setState(state)) {
         stateChanged = true;
       }
@@ -167,8 +160,7 @@ public class ArrayDrawable extends Drawable
   @Override
   protected boolean onLevelChange(int level) {
     boolean levelChanged = false;
-    for (int i = 0; i < mLayers.length; i++) {
-      Drawable drawable = mLayers[i];
+    for (Drawable drawable : mLayers) {
       if (drawable != null && drawable.setLevel(level)) {
         levelChanged = true;
       }
@@ -178,8 +170,7 @@ public class ArrayDrawable extends Drawable
 
   @Override
   public void draw(Canvas canvas) {
-    for (int i = 0; i < mLayers.length; i++) {
-      Drawable drawable = mLayers[i];
+    for (Drawable drawable : mLayers) {
       if (drawable != null) {
         drawable.draw(canvas);
       }
@@ -193,8 +184,7 @@ public class ArrayDrawable extends Drawable
     padding.right = 0;
     padding.bottom = 0;
     final Rect rect = mTmpRect;
-    for (int i = 0; i < mLayers.length; i++) {
-      Drawable drawable = mLayers[i];
+    for (Drawable drawable : mLayers) {
       if (drawable != null) {
         drawable.getPadding(rect);
         padding.left = Math.max(padding.left, rect.left);
@@ -206,10 +196,10 @@ public class ArrayDrawable extends Drawable
     return true;
   }
 
+
   @Override
   public Drawable mutate() {
-    for (int i = 0; i < mLayers.length; i++) {
-      Drawable drawable = mLayers[i];
+    for (Drawable drawable : mLayers) {
       if (drawable != null) {
         drawable.mutate();
       }
@@ -236,8 +226,7 @@ public class ArrayDrawable extends Drawable
   @Override
   public void setAlpha(int alpha) {
     mDrawableProperties.setAlpha(alpha);
-    for (int i = 0; i < mLayers.length; i++) {
-      Drawable drawable = mLayers[i];
+    for (Drawable drawable : mLayers) {
       if (drawable != null) {
         drawable.setAlpha(alpha);
       }
@@ -247,8 +236,7 @@ public class ArrayDrawable extends Drawable
   @Override
   public void setColorFilter(ColorFilter colorFilter) {
     mDrawableProperties.setColorFilter(colorFilter);
-    for (int i = 0; i < mLayers.length; i++) {
-      Drawable drawable = mLayers[i];
+    for (Drawable drawable : mLayers) {
       if (drawable != null) {
         drawable.setColorFilter(colorFilter);
       }
@@ -258,8 +246,7 @@ public class ArrayDrawable extends Drawable
   @Override
   public void setDither(boolean dither) {
     mDrawableProperties.setDither(dither);
-    for (int i = 0; i < mLayers.length; i++) {
-      Drawable drawable = mLayers[i];
+    for (Drawable drawable : mLayers) {
       if (drawable != null) {
         drawable.setDither(dither);
       }
@@ -269,8 +256,7 @@ public class ArrayDrawable extends Drawable
   @Override
   public void setFilterBitmap(boolean filterBitmap) {
     mDrawableProperties.setFilterBitmap(filterBitmap);
-    for (int i = 0; i < mLayers.length; i++) {
-      Drawable drawable = mLayers[i];
+    for (Drawable drawable : mLayers) {
       if (drawable != null) {
         drawable.setFilterBitmap(filterBitmap);
       }
@@ -280,8 +266,7 @@ public class ArrayDrawable extends Drawable
   @Override
   public boolean setVisible(boolean visible, boolean restart) {
     boolean changed = super.setVisible(visible, restart);
-    for (int i = 0; i < mLayers.length; i++) {
-      Drawable drawable = mLayers[i];
+    for (Drawable drawable : mLayers) {
       if (drawable != null) {
         drawable.setVisible(visible, restart);
       }
@@ -355,10 +340,8 @@ public class ArrayDrawable extends Drawable
   }
 
   @Override
-  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   public void setHotspot(float x, float y) {
-    for (int i = 0; i < mLayers.length; i++) {
-      Drawable drawable = mLayers[i];
+    for (Drawable drawable : mLayers) {
       if (drawable != null) {
         drawable.setHotspot(x, y);
       }
