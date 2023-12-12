@@ -40,17 +40,20 @@ public class RoundedBitmapDrawable extends RoundedDrawable {
     return sDefaultRepeatEdgePixels;
   }
 
-  public RoundedBitmapDrawable(
-      Resources res, @Nullable Bitmap bitmap, @Nullable Paint paint, boolean repeatEdgePixels) {
-    super(new BitmapDrawable(res, bitmap));
-    mBitmap = bitmap;
+  private void initializePaint(@Nullable Paint paint, boolean repeatEdgePixels){
     if (paint != null) {
       mPaint.set(paint);
     }
-
     mPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
     mBorderPaint.setStyle(Paint.Style.STROKE);
     mRepeatEdgePixels = repeatEdgePixels;
+  }
+
+  public RoundedBitmapDrawable(
+      Resources res, @Nullable Bitmap bitmap, @Nullable Paint paint, boolean repeatEdgePixels) {
+    super(new BitmapDrawable(res, bitmap));
+    mBitmap = bitmap;  
+    initializePaint(paint, repeatEdgePixels);
   }
 
   public RoundedBitmapDrawable(Resources res, @Nullable Bitmap bitmap, @Nullable Paint paint) {
