@@ -172,14 +172,14 @@ public class ProgressBarDrawable extends Drawable implements CloneableDrawable {
   }
 
 private int calculateLength(int size, int level) {
-    return (size - 2 * getPadding()) * level / MAX_LEVEL;
+    return (size - 2 * mPadding) * level / MAX_LEVEL;
 }
 
 private void drawHorizontalBar(Canvas canvas, int level, int color) {
     Rect bounds = getBounds();
     int length = calculateLength(bounds.width(), level);
-    int xpos = bounds.left + getPadding();
-    int ypos = bounds.bottom - getPadding() - getBarWidth();
+    int xpos = bounds.left + mPadding;
+    int ypos = bounds.bottom - mPadding - getBarWidth();
     setRect(xpos, ypos, length, getBarWidth());
     drawBar(canvas, color);
 }
