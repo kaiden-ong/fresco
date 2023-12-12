@@ -29,6 +29,7 @@ public class ProgressBarDrawable extends Drawable implements CloneableDrawable {
   private int mRadius = 0;
   private boolean mHideWhenZero = false;
   private boolean mIsVertical = false;
+  private static final int MAX_LEVEL = 10000;
 
   /** Sets the progress bar color. */
   public void setColor(int color) {
@@ -170,23 +171,31 @@ public class ProgressBarDrawable extends Drawable implements CloneableDrawable {
     return copy;
   }
 
-  private void drawHorizontalBar(Canvas canvas, int level, int color) {
+private int calculateLength(int size, int level) {
+    return (size - 2 * getPadding()) * level / MAX_LEVEL;
+}
+
+private void drawHorizontalBar(Canvas canvas, int level, int color) {
     Rect bounds = getBounds();
-    int length = (bounds.width() - 2 * mPadding) * level / 10000;
-    int xpos = bounds.left + mPadding;
-    int ypos = bounds.bottom - mPadding - mBarWidth;
-    mRect.set(xpos, ypos, xpos + length, ypos + mBarWidth);
+    int length = calculateLength(bounds.width(), level);
+    int xpos = bounds.left + getPadding();
+    int ypos = bounds.bottom - getPadding() - getBarWidth();
+    setRect(xpos, ypos, length, getBarWidth());
     drawBar(canvas, color);
-  }
+}
 
   private void drawVerticalBar(Canvas canvas, int level, int color) {
     Rect bounds = getBounds();
-    int length = (bounds.height() - 2 * mPadding) * level / 10000;
+    int length = calculateLength(bounds.width(), level);
     int xpos = bounds.left + mPadding;
     int ypos = bounds.top + mPadding;
     mRect.set(xpos, ypos, xpos + mBarWidth, ypos + length);
     drawBar(canvas, color);
   }
+
+  private void setRect(int xpos, int ypos, int length, int height) {
+    mRect.set(xpos, ypos, xpos + length, ypos + height);
+}
 
   private void drawBar(Canvas canvas, int color) {
     mPaint.setColor(color);
